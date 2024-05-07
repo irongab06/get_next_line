@@ -11,43 +11,60 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <unistd.h>
 #include <stdio.h>
 
 #ifndef BUFFER_SIZE
 #define BUFFER_SIZE 1 
 #endif
 
-size_t	ft_strlen_buffer(const char *str)
+size_t	ft_strlen_buffer(char *buffer)
 {
-	size_t	i;
+	int	i;
 
 	i = 0;
-	while (str[i] != '\n' || str[i] != '\0')
+	while (buffer[i] != '\n' || buffer[i] != '\0')
 	{
 		i++;
 	}
+	i++;
 	return (i);
+}
+
+void	get_line(char *buffer, char *str)
+{
+	size_t	i;
+	static char	str_static;
+	
+	i = ft_strlen_buffer(buffer);
+	str = malloc(sizeof(char) * (i + 1));
+	str = ft_substr(buffer, ft_strchr(buffer, '\n'), i);
+}
+
+int	ft_read(int fd, char *buffer)
+{
+	int	inter;
+
+	inter = read(fd, buffer, sizeof(buffer));
+	if 
+	return (inter);
 }
 
 char	*get_next_line(int fd)
 {
-	int	status;
 	char	buffer[BUFFER_SIZE];
 	static char	static_buffer;
 	char	*str;
 	
-	status = read(fd, buffer, sizeof(buffer));
-	str = ft_substr(buffer ,ft_strchr(buffer, '\n', ft_strlen_buffer(buffer)); 
-	str = malloc(sizeof(char) * (sizeof(buffer) + 1));
-	if (str == NULL)
-		return (NULL);	
+	while ((ft_read(fd, buffer) > 0)
+	}
+		get_line(buffer, str);	
+	{
 	return (str);	
 }
 
 int	main(void)
 {
-	char	*str;
+	char	str[20];
 	int	fd;
 	int	i;
 	
@@ -58,10 +75,7 @@ int	main(void)
 		write(1, "Error1\n", 7);
 		return (1);
 	}
-	while (1)
-	{
-		str = get_next_line(fd);
-		printf("%s", str);
-	}
+	str = get_next_line(fd);
+	printf("%s", str);
 	return (0);
 }
