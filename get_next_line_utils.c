@@ -6,11 +6,23 @@
 /*   By: gacavali <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:24:35 by gacavali          #+#    #+#             */
-/*   Updated: 2024/05/07 15:28:03 by gacavali         ###   ########.fr       */
+/*   Updated: 2024/05/08 14:14:11 by gacavali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+void	ft_bzero(void *s, size_t n)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < n)
+	{
+		((unsigned char *)s)[i] = 0;
+		i++;
+	}
+}
 
 size_t	ft_strlen(const char *str)
 {
@@ -44,7 +56,7 @@ char	*ft_strdup(const char *s1)
 	return (s2);
 }
 
-char	*ft_strchr(const char *s, int c)
+int	ft_strchr(const char *s, int c)
 {
 	int		i;
 	char	d;
@@ -52,14 +64,14 @@ char	*ft_strchr(const char *s, int c)
 	d = (char)c;
 	i = 0;
 	if (s[i] == '\0' && d == '\0')
-		return (&((char *)s)[i]);
+		return (1);
 	while (s[i] || d == '\0')
 	{
-		if (s[i] == d)
-			return (&((char *)s)[i]);
+ 		if (s[i] == d)
+			return (1);
 		i++;
 	}
-	return (NULL);
+	return (0);
 }
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
@@ -87,4 +99,45 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	s1[i] = '\0';
 	return (s1);
+}
+void	*ft_calloc(size_t count, size_t size)
+{
+	void	*s;
+
+	if ((count >= 65535 && size >= 65535) || count * size >= 65535)
+		return (NULL);
+	s = malloc(count * size);
+	if (s == NULL)
+		return (NULL);
+	ft_bzero(s, (count * size));
+	return (s);
+}
+
+char	*ft_strjoin(char const *s1, char const *s2)
+{
+	size_t	i;
+	size_t	j;
+	char	*new_s;
+
+	if (s1 == NULL && s2 == NULL)
+	{
+		new_s = ft_calloc(1, 1);
+		return (new_s);
+	}
+	i = 0;
+	if (s1 != NULL)
+		i = ft_strlen(s1);
+	if (s2 != NULL)
+		i += ft_strlen(s2);
+	new_s = ft_calloc(sizeof(char), i + 1);
+	if (new_s == NULL)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1 && s1[j])
+		new_s[i++] = s1[j++];
+	j = 0;
+	while (s2 && s2[j])
+		new_s[i++] = s2[j++];
+	return (new_s);
 }

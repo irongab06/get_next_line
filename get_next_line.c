@@ -6,7 +6,7 @@
 /*   By: gacavali <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 12:30:01 by gacavali          #+#    #+#             */
-/*   Updated: 2024/05/07 15:13:38 by gacavali         ###   ########.fr       */
+/*   Updated: 2024/05/08 16:42:07 by gacavali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,65 +17,69 @@
 #define BUFFER_SIZE 1 
 #endif
 
-size_t	ft_strlen_buffer(char *buffer)
-{
-	int	i;
+//get_line
 
-	i = 0;
-	while (buffer[i] != '\n' || buffer[i] != '\0')
-	{
-		i++;
-	}
-	i++;
-	return (i);
-}
+//get_left_over
 
-void	get_line(char *buffer, char *str)
+char	*get_entire_line(char *buffer, char *line, int len, int	fd)
 {
-	size_t	i;
-	static char	str_static;
+	int	count;
 	
-	i = ft_strlen_buffer(buffer);
-	str = malloc(sizeof(char) * (i + 1));
-	str = ft_substr(buffer, ft_strchr(buffer, '\n'), i);
-}
+	count = 0;
+	while (count != 1)
+	{	
+		len = read(fd, buffer, BUFFER_SIZE);
+		count = ft_strchr(buffer, '\n');
+		if (count == 0)
 
-int	ft_read(int fd, char *buffer)
-{
-	int	inter;
-
-	inter = read(fd, buffer, sizeof(buffer));
-	if 
-	return (inter);
+		{
+			line = ft_strjoin(line, buffer);
+		}
+	}
+	line = ft_strjoin(line, buffer);
+	return (line);
+	
 }
+/*
+	boucle tant que != '\n'
+	return toute la line avec \n et le reste
+*/
+
 
 char	*get_next_line(int fd)
 {
-	char	buffer[BUFFER_SIZE];
-	static char	static_buffer;
-	char	*str;
-	
-	while ((ft_read(fd, buffer) > 0)
-	}
-		get_line(buffer, str);	
-	{
-	return (str);	
+	int		len;
+	//static char	*left_over;
+	char		*line;
+	char		buffer[BUFFER_SIZE + 1];
+
+	line = NULL;
+	len = 0;
+	line = get_entire_line(buffer, line, len, fd);
+	//line = get_line();
+	//left_over = get_left_over();
+
+	return (line);
 }
 
-int	main(void)
+
+int	main(int argc, char **argv)
 {
-	char	str[20];
 	int	fd;
-	int	i;
-	
-	i = 0;
-	fd = open("get_next_line.txt", O_RDONLY);
-	if (fd == -1)
-	{
-		write(1, "Error1\n", 7);
-		return (1);
-	}
-	str = get_next_line(fd);
-	printf("%s", str);
+	int	nbr_of_lines = 1;
+
+	if (argc > 1)
+		nbr_of_lines = atoi(argv[1]);
+	fd = open("test.txt", O_RDONLY);
+	for (int i = 0; i < nbr_of_lines; ++i)
+		printf("%d. \"%s\"\n", i, get_next_line(fd));
 	return (0);
 }
+/*
+	//len = read(fd, buffer, BUFFER_SIZE);
+	if (BUFFER_SIZE <= 0 || read(fd, 0, 0) == 0)
+	{
+		free();	
+		return (NULL);
+	}
+*/
