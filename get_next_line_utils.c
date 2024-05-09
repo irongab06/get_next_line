@@ -6,7 +6,7 @@
 /*   By: gacavali <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 15:24:35 by gacavali          #+#    #+#             */
-/*   Updated: 2024/05/08 14:14:11 by gacavali         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:14:12 by gacavali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,8 @@ size_t	ft_strlen(const char *str)
 	size_t	i;
 
 	i = 0;
+	if (!str)
+		return (0);
 	while (str[i])
 	{
 		i++;
@@ -56,23 +58,26 @@ char	*ft_strdup(const char *s1)
 	return (s2);
 }
 
-int	ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *s, int c)
 {
 	int		i;
 	char	d;
 
 	d = (char)c;
 	i = 0;
+	if (!s)
+		return (NULL);
 	if (s[i] == '\0' && d == '\0')
-		return (1);
+		return (&((char *)s)[i]);
 	while (s[i] || d == '\0')
 	{
- 		if (s[i] == d)
-			return (1);
+		if (s[i] == d)
+			return (&((char *)s)[i]);
 		i++;
 	}
-	return (0);
+	return (NULL);
 }
+
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {

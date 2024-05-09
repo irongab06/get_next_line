@@ -5,79 +5,120 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: gacavali <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/06 12:30:01 by gacavali          #+#    #+#             */
-/*   Updated: 2024/05/08 16:42:07 by gacavali         ###   ########.fr       */
+/*   Created: 2024/05/09 11:35:03 by gacavali          #+#    #+#             */
+/*   Updated: 2024/05/09 15:44:21 by gacavali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 #include <stdio.h>
 
-#ifndef BUFFER_SIZE
-#define BUFFER_SIZE 1 
-#endif
-
-//get_line
-
-//get_left_over
-
-char	*get_entire_line(char *buffer, char *line, int	fd)
+size_t	ft_strlcpy(char *dst, char *src, size_t size)
 {
-	int	count;
+	size_t	i;
+	size_t	src_len;
 
-	count = 0;
-	while (count != 1)
-	{	
-		 read(fd, buffer, BUFFER_SIZE);
-		count = ft_strchr(buffer, '\n');
-		if (count == 0)
-
+	i = 0;
+	src_len = ft_strlen(src);
+	if (dst && src && size)
+	{
+		while (src[i] && i < size - 1)
 		{
-			line = ft_strjoin(line, buffer);
+			dst[i] = src[i];
+			++i;
 		}
+		dst[i] = '\0';
 	}
-	line = ft_strjoin(line, buffer);
-	return (line);
-	
+	return (src_len);
 }
-/*
-	boucle tant que != '\n'
-	return toute la line avec \n et le reste
-*/
 
+
+char	*get_line(char **leftover)
+{
+	char	*new_line;
+	char	*temp;
+	size_t	len;
+	
+	len = ft_strchr(*leftover, '\n') - *leftover + 1;
+	//--------------------------------
+	//printf("ft_strchr: %s\n", ft_strchr(*leftover, '\n'));
+	//printf("Leftover4 %s\n", *leftover);
+	//printf("Len: %zu\n", len);
+	//------------------------------------
+	new_line = ft_substr(*leftover, 0, len);
+	//-------------------------------------
+	//printf("new_line: %s\n", new_line);
+	//---------------------------------------
+	temp = ft_substr(*leftover, len, ft_strlen(*leftover) - len);
+	free(*leftover);
+	*leftover = NULL;
+	if (temp != NULL)
+		*leftover = ft_strjoin(NULL, temp);	
+	free(temp);
+	return (new_line);
+}
+
+char	*get_entire_line(char *buffer, char *leftover, int fd)
+{
+	char	*temp;
+	int	len;
+
+	len = 0;	
+	temp = NULL;
+	while (!ft_strchr(leftover, '\n'))
+	{
+		len = read(fd, buffer, BUFFER_SIZE);
+		if (len <= 0)
+			return (NULL);
+		buffer[len] = '\0';
+		temp = ft_strjoin(leftover, buffer);
+		if (leftover)
+			free(leftover);
+		leftover = ft_strjoin(NULL, temp);
+		free(temp);
+	}
+	return (leftover);
+	// je recupere avant le \n je le renvoi et je stock ce qu'il uy a apres .
+
+}
 
 char	*get_next_line(int fd)
 {
-	//static char	*left_over;
-	char		*line;
-	char		buffer[BUFFER_SIZE + 1];
+	char	buffer[BUFFER_SIZE + 1];
+	char	*line;
+	static char	*leftover;
+	
+	if (fd < 0)
+		return (NULL);
+	leftover = get_entire_line(buffer, leftover, fd);
+	//printf("Leftover3 %s\n", leftover);
 
-	line = NULL;
-	line = get_entire_line(buffer, line, fd);
-	//line = get_line();
-	//left_over = get_left_over();
-
+	// verrifier si leftover est nul ne pas oublier.
+	
+	line = get_line(&leftover);
+	if (!ft_strlen(leftover))
+	{
+		free(leftover);
+		leftover = NULL;
+	}
 	return (line);
 }
-
 
 int	main(int argc, char **argv)
 {
 	int	fd;
 	int	nbr_of_lines = 1;
+	char	*str;
 
 	if (argc > 1)
 		nbr_of_lines = atoi(argv[1]);
-	fd = open("test.txt", O_RDONLY);
+	fd = open("b.txt", O_RDONLY);
 	for (int i = 0; i < nbr_of_lines; ++i)
-		printf("%d. \"%s\"\n", i, get_next_line(fd));
+	{
+		str = get_next_line(fd);
+		printf("%s", str);
+		free(str);		
+	}
 	return (0);
 }
-/*
-	//len = read(fd, buffer, BUFFER_SIZE);
-	if (BUFFER_SIZE <= 0 || read(fd, 0, 0) == 0)
-	{
-		free();	
-		return (NULL);
-	}
-*/
+

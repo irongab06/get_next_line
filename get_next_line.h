@@ -6,7 +6,7 @@
 /*   By: gacavali <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 12:55:49 by gacavali          #+#    #+#             */
-/*   Updated: 2024/05/08 14:22:40 by gacavali         ###   ########.fr       */
+/*   Updated: 2024/05/09 13:11:42 by gacavali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 char	*get_next_line(int fd);
 char	*ft_strdup(const char *s1);
-int	ft_strchr(const char *s, int c);
+char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(const char *line, const char *buffer);
 
