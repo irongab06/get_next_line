@@ -21,14 +21,14 @@
 
 //get_left_over
 
-char	*get_entire_line(char *buffer, char *line, int len, int	fd)
+char	*get_entire_line(char *buffer, char *line, int	fd)
 {
 	int	count;
-	
+
 	count = 0;
 	while (count != 1)
 	{	
-		len = read(fd, buffer, BUFFER_SIZE);
+		 read(fd, buffer, BUFFER_SIZE);
 		count = ft_strchr(buffer, '\n');
 		if (count == 0)
 
@@ -48,14 +48,12 @@ char	*get_entire_line(char *buffer, char *line, int len, int	fd)
 
 char	*get_next_line(int fd)
 {
-	int		len;
 	//static char	*left_over;
 	char		*line;
 	char		buffer[BUFFER_SIZE + 1];
 
 	line = NULL;
-	len = 0;
-	line = get_entire_line(buffer, line, len, fd);
+	line = get_entire_line(buffer, line, fd);
 	//line = get_line();
 	//left_over = get_left_over();
 
