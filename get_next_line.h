@@ -6,12 +6,17 @@
 /*   By: gacavali <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/06 12:55:49 by gacavali          #+#    #+#             */
-/*   Updated: 2024/05/09 13:11:42 by gacavali         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:55:50 by gacavali         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
+
+#ifndef BUFFER_SIZE
+#define BUFFER_SIZE 1
+#endif
+
 
 #include <unistd.h>
 #include <stdlib.h>
