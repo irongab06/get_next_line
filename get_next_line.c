@@ -75,7 +75,7 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-/*
+
 int	main(int argc, char **argv)
 {
 	int	fd;
@@ -84,7 +84,7 @@ int	main(int argc, char **argv)
 
 	if (argc > 1)
 		nbr_of_lines = atoi(argv[1]);
-	fd = open("t.txt", O_RDONLY);
+	fd = open("testb.txt", O_RDONLY);
 	for (int i = 0; i < nbr_of_lines; ++i)
 	{
 		str = get_next_line(fd);
@@ -92,4 +92,4 @@ int	main(int argc, char **argv)
 		free(str);		
 	}
 	return (0);
-}*/
+}
