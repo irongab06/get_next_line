@@ -13,25 +13,11 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
-size_t	ft_strlcpy(char *dst, char *src, size_t size)
+int	ft_read(int *len, int fd, char *buffer)
 {
-	size_t	i;
-	size_t	src_len;
-
-	i = 0;
-	src_len = ft_strlen(src);
-	if (dst && src && size)
-	{
-		while (src[i] && i < size - 1)
-		{
-			dst[i] = src[i];
-			++i;
-		}
-		dst[i] = '\0';
-	}
-	return (src_len);
+	*len = read(fd, buffer, BUFFER_SIZE);
+	return (*len);
 }
-
 
 char	*get_line(char **leftover)
 {
@@ -40,15 +26,7 @@ char	*get_line(char **leftover)
 	size_t	len;
 	
 	len = ft_strchr(*leftover, '\n') - *leftover + 1;
-	//--------------------------------
-	//printf("ft_strchr: %s\n", ft_strchr(*leftover, '\n'));
-	//printf("Leftover4 %s\n", *leftover);
-	//printf("Len: %zu\n", len);
-	//------------------------------------
 	new_line = ft_substr(*leftover, 0, len);
-	//-------------------------------------
-	//printf("new_line: %s\n", new_line);
-	//---------------------------------------
 	temp = ft_substr(*leftover, len, ft_strlen(*leftover) - len);
 	free(*leftover);
 	*leftover = NULL;
@@ -65,7 +43,7 @@ char	*get_entire_line(char *buffer, char *leftover, int fd)
 
 	len = 0;	
 	temp = NULL;
-	while (!ft_strchr(leftover, '\n') && (len = read(fd, buffer, BUFFER_SIZE)) > 0)
+	while (!ft_strchr(leftover, '\n') && ft_read(&len, fd, buffer) > 0)
 	{
 		if (len <= 0)
 			return (NULL);
@@ -77,23 +55,18 @@ char	*get_entire_line(char *buffer, char *leftover, int fd)
 		free(temp);
 	}
 	return (leftover);
-	// je recupere avant le \n je le renvoi et je stock ce qu'il uy a apres .
 
 }
 
 char	*get_next_line(int fd)
 {
-	char	buffer[BUFFER_SIZE + 1];
+	static char	buffer[BUFFER_SIZE + 1];
 	char	*line;
 	static char	*leftover;
 	
 	if (fd < 0)
 		return (NULL);
 	leftover = get_entire_line(buffer, leftover, fd);
-	//printf("Leftover3 %s\n", leftover);
-
-	// verrifier si leftover est nul ne pas oublier.
-	
 	line = get_line(&leftover);
 	if (!ft_strlen(leftover))
 	{
@@ -111,7 +84,7 @@ int	main(int argc, char **argv)
 
 	if (argc > 1)
 		nbr_of_lines = atoi(argv[1]);
-	fd = open("testn.txt", O_RDONLY);
+	fd = open("t.txt", O_RDONLY);
 	for (int i = 0; i < nbr_of_lines; ++i)
 	{
 		str = get_next_line(fd);
@@ -119,5 +92,4 @@ int	main(int argc, char **argv)
 		free(str);		
 	}
 	return (0);
-}
-*/
+}*/
