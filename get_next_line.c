@@ -65,9 +65,8 @@ char	*get_entire_line(char *buffer, char *leftover, int fd)
 
 	len = 0;	
 	temp = NULL;
-	while (!ft_strchr(leftover, '\n'))
+	while (!ft_strchr(leftover, '\n') && (len = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
-		len = read(fd, buffer, BUFFER_SIZE);
 		if (len <= 0)
 			return (NULL);
 		buffer[len] = '\0';
@@ -103,7 +102,7 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-
+/*
 int	main(int argc, char **argv)
 {
 	int	fd;
@@ -112,7 +111,7 @@ int	main(int argc, char **argv)
 
 	if (argc > 1)
 		nbr_of_lines = atoi(argv[1]);
-	fd = open("b.txt", O_RDONLY);
+	fd = open("testn.txt", O_RDONLY);
 	for (int i = 0; i < nbr_of_lines; ++i)
 	{
 		str = get_next_line(fd);
@@ -121,4 +120,4 @@ int	main(int argc, char **argv)
 	}
 	return (0);
 }
-
+*/
