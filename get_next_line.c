@@ -38,14 +38,14 @@ char	*get_line(char **leftover)
 	char	*new_line;
 	char	*temp;
 	size_t	len;
-	
+
 	len = ft_strchr(*leftover, '\n') - *leftover + 1;
 	new_line = ft_substr(*leftover, 0, len);
 	temp = ft_substr(*leftover, len, ft_strlen(*leftover) - len);
 	free(*leftover);
 	*leftover = NULL;
 	if (temp != NULL)
-		*leftover = ft_strjoin(NULL, temp);	
+		*leftover = ft_strjoin(NULL, temp);
 	free(temp);
 	return (new_line);
 }
@@ -53,9 +53,9 @@ char	*get_line(char **leftover)
 char	*get_entire_line(char *buffer, char *leftover, int fd)
 {
 	char	*temp;
-	int	len;
+	int		len;
 
-	len = 0;	
+	len = 0;
 	temp = NULL;
 	while (!ft_strchr(leftover, '\n') && ft_read(&len, fd, buffer) > 0)
 	{
@@ -69,15 +69,14 @@ char	*get_entire_line(char *buffer, char *leftover, int fd)
 		free(temp);
 	}
 	return (leftover);
-
 }
 
 char	*get_next_line(int fd)
 {
 	static char	buffer[BUFFER_SIZE + 1];
-	char	*line;
 	static char	*leftover;
-	
+	char		*line;
+
 	if (fd < 0)
 		return (NULL);
 	leftover = get_entire_line(buffer, leftover, fd);

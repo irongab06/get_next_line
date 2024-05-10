@@ -12,7 +12,6 @@
 
 #include "get_next_line.h"
 
-
 char	*ft_strdup(const char *s1)
 {
 	char	*s2;
@@ -52,7 +51,6 @@ char	*ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
 	char				*s1;
@@ -79,6 +77,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	s1[i] = '\0';
 	return (s1);
 }
+
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*s;
@@ -98,8 +97,7 @@ void	*ft_calloc(size_t count, size_t size)
 		i++;
 	}
 	return (s);
-}	
-
+}
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
