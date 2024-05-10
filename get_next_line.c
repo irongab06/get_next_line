@@ -13,6 +13,20 @@
 #include "get_next_line.h"
 #include <stdio.h>
 
+size_t	ft_strlen(const char *str)
+{
+	size_t	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+	{
+		i++;
+	}
+	return (i);
+}
+
 int	ft_read(int *len, int fd, char *buffer)
 {
 	*len = read(fd, buffer, BUFFER_SIZE);
@@ -75,7 +89,7 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-
+/*
 int	main(int argc, char **argv)
 {
 	int	fd;
@@ -92,4 +106,4 @@ int	main(int argc, char **argv)
 		free(str);		
 	}
 	return (0);
-}
+}*/

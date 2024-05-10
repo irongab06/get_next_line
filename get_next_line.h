@@ -31,5 +31,5 @@ char	*ft_strjoin(const char *line, const char *buffer);
 //--------------------------------------------------------------
 
 size_t	ft_strlen(const char *str);
-
+size_t	ft_strlen(const char *str);
 #endif

@@ -12,32 +12,6 @@
 
 #include "get_next_line.h"
 
-void	ft_bzero(void *s, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < n)
-	{
-		((unsigned char *)s)[i] = 0;
-		i++;
-	}
-}
-
-size_t	ft_strlen(const char *str)
-{
-	size_t	i;
-
-	i = 0;
-	if (!str)
-		return (0);
-	while (str[i])
-	{
-		i++;
-	}
-	return (i);
-}
-
 
 char	*ft_strdup(const char *s1)
 {
@@ -108,15 +82,24 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 void	*ft_calloc(size_t count, size_t size)
 {
 	void	*s;
+	size_t	n;
+	size_t	i;
 
+	i = 0;
+	n = (count * size);
 	if ((count >= 65535 && size >= 65535) || count * size >= 65535)
 		return (NULL);
 	s = malloc(count * size);
 	if (s == NULL)
 		return (NULL);
-	ft_bzero(s, (count * size));
+	while (i < n)
+	{
+		((unsigned char *)s)[i] = 0;
+		i++;
+	}
 	return (s);
-}
+}	
+
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
