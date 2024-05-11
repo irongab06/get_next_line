@@ -35,6 +35,11 @@ char	*get_line(char **leftover)
 	if (temp != NULL)
 		*leftover = ft_strjoin(NULL, temp);
 	free(temp);
+	if (!ft_strlen(*leftover))
+	{
+		free(*leftover);
+		*leftover = NULL;
+	}
 	return (new_line);
 }
 
@@ -54,6 +59,8 @@ char	*get_entire_line(char *buffer, char *leftover, int fd)
 		leftover = ft_strjoin(NULL, temp);
 		free(temp);
 	}
+	if (len < 0)
+		return (NULL);
 	return (leftover);
 }
 
@@ -65,14 +72,13 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 		return (NULL);
 	if (!buffer[fd][1])
+	{
 		buffer[fd][1] = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
+		if (buffer[fd][1] == NULL)
+			return (NULL);
+	}
 	buffer[fd][0] = get_entire_line(buffer[fd][1], buffer[fd][0], fd);
 	line = get_line(&buffer[fd][0]);
-	if (!ft_strlen(buffer[fd][0]))
-	{
-		free(buffer[fd][0]);
-		buffer[fd][0] = NULL;
-	}
 	if (!buffer[fd][0])
 	{
 		if (buffer[fd][1])

@@ -66,6 +66,8 @@ char	*get_entire_line(char *buffer, char *leftover, int fd)
 		leftover = ft_strjoin(NULL, temp);
 		free(temp);
 	}
+	if (len < 0)
+		return (NULL);
 	return (leftover);
 }
 
