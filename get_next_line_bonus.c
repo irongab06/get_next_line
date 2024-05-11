@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: gacavali <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/09 11:35:03 by gacavali          #+#    #+#             */
-/*   Updated: 2024/05/09 15:44:21 by gacavali         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 #include <stdio.h>
 
 size_t	ft_strlen(const char *str)
@@ -71,18 +59,27 @@ char	*get_entire_line(char *buffer, char *leftover, int fd)
 
 char	*get_next_line(int fd)
 {
-	static char	buffer[BUFFER_SIZE + 1];
-	static char	*leftover;
+	static char	*buffer[1024][2];
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, NULL, 0) < 0)
 		return (NULL);
-	leftover = get_entire_line(buffer, leftover, fd);
-	line = get_line(&leftover);
-	if (!ft_strlen(leftover))
+	if (!buffer[fd][1])
+		buffer[fd][1] = (char *)malloc(sizeof(char) * BUFFER_SIZE + 1);
+	buffer[fd][0] = get_entire_line(buffer[fd][1], buffer[fd][0], fd);
+	line = get_line(&buffer[fd][0]);
+	if (!ft_strlen(buffer[fd][0]))
 	{
-		free(leftover);
-		leftover = NULL;
+		free(buffer[fd][0]);
+		buffer[fd][0] = NULL;
+	}
+	if (!buffer[fd][0])
+	{
+		if (buffer[fd][1])
+		{
+			free(buffer[fd][1]);
+			buffer[fd][1] = NULL;
+		}
 	}
 	return (line);
 }
